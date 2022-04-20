@@ -12,12 +12,15 @@ public class PlayerMovement : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
 
+    public bool player_Is_Moving;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
 
         cam = GameObject.Find("Main Camera").transform;
+        player_Is_Moving = false;
     }
 
     // Update is called once per frame
@@ -29,6 +32,9 @@ public class PlayerMovement : MonoBehaviour
 
         if(direction.magnitude >= 0.1f)
         {
+            // player is moving
+            player_Is_Moving = true;
+
             // we have input to move
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y; // used to rotate character towards movement
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -37,6 +43,11 @@ public class PlayerMovement : MonoBehaviour
             // Move character
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDirection.normalized * speed * Time.deltaTime);
+        }
+        else
+        {
+            // player stopped moving
+            player_Is_Moving = false;
         }
     }
 }
