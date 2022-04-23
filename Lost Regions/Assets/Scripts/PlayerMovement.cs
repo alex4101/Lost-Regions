@@ -6,7 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {
     // Variables
     public CharacterController controller;
-    public float speed = 6f;
+    public float walk_Speed = 6f; // walk speed
+    public float run_Speed = 15f; // run speed
+    public float current_Player_Speed = 6f; // current speed of player
     public Transform cam; // camera
 
     public float turnSmoothTime = 0.1f;
@@ -42,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
             // Move character
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDirection.normalized * speed * Time.deltaTime);
+            controller.Move(moveDirection.normalized * walk_Speed * Time.deltaTime);
         }
         else
         {
