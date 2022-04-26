@@ -18,8 +18,8 @@ public class AnimationManagement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        movement_Script = GameObject.Find("XariaRig").GetComponent<PlayerMovement>();
-        animator = GetComponent<Animator>();
+        movement_Script = GameObject.Find("Xaria Model").GetComponent<PlayerMovement>();
+        animator = GameObject.Find("XariaRig").GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -31,25 +31,25 @@ public class AnimationManagement : MonoBehaviour
         {
             // player is moving!
             animator.SetBool("isWalking", true);
-            movement_Script.current_Player_Speed = movement_Script.walk_Speed;
+            movement_Script.speed = movement_Script.walk_Speed;
         }
         else
         {
             // player is not moving
             animator.SetBool("isWalking", false);
-            movement_Script.current_Player_Speed = movement_Script.walk_Speed;
+            movement_Script.speed = movement_Script.walk_Speed;
         }
 
         // Running state
         if (Input.GetKey("left shift"))
         {
             animator.SetBool("isRunning", true);
-            movement_Script.current_Player_Speed = movement_Script.run_Speed;
+            movement_Script.speed = movement_Script.run_Speed;
         }
         else
         {
             animator.SetBool("isRunning", false);
-            movement_Script.current_Player_Speed = movement_Script.walk_Speed;
+            movement_Script.speed = movement_Script.walk_Speed;
         }
 
         if (movement_Script.player_Is_Moving == true)

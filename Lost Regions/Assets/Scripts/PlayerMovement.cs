@@ -8,48 +8,46 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController controller;
     public float walk_Speed = 6f; // walk speed
     public float run_Speed = 15f; // run speed
-    public float current_Player_Speed = 6f; // current speed of player
+    public float speed = 6f;
+   // public float current_Player_Speed = 6f; // current speed of player
     public Transform cam; // camera
 
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
+
+    public GameObject Xaria_Empty; // empty gameobject
+    public GameObject XariaRig; // XariaRig gameobject (model of Xaria)
+
+    public float rotationSpeed;
 
     public bool player_Is_Moving;
 
     // Start is called before the first frame update
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        controller = GameObject.Find("XariaRig").GetComponent<CharacterController>();
 
         cam = GameObject.Find("Main Camera").transform;
         player_Is_Moving = false;
+
+        Xaria_Empty = GameObject.Find("Xaria");
+        XariaRig = GameObject.Find("XariaRig");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal"); // outputs -1 or 1.   -1 = A or Left arrow key. 1 for D or right arrow
-        float vertical = Input.GetAxisRaw("Vertical"); // outputs -1 or 1.   -1 = W key or up arrow. 1 = S key or down arrow.
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        // Move player
+        var direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        direction.Normalize(); // makes sure we have a magnitude of 1
+        Xaria_Empty.transform.Translate(direction * speed * Time.deltaTime, Space.World);
 
-        if(direction.magnitude >= 0.1f)
+        // Check if character is moving 
+        if(direction != Vector3.zero)
         {
-            // player is moving
-            player_Is_Moving = true;
-
-            // we have input to move
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y; // used to rotate character towards movement
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            // Move character
-            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDirection.normalized * walk_Speed * Time.deltaTime);
-        }
-        else
-        {
-            // player stopped moving
-            player_Is_Moving = false;
+            // Rotate to face direction 
+            XariaRig.transform.forward = direction;
         }
     }
 }
