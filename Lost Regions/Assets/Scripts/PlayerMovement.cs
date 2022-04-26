@@ -41,13 +41,16 @@ public class PlayerMovement : MonoBehaviour
         // Move player
         var direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         direction.Normalize(); // makes sure we have a magnitude of 1
-        Xaria_Empty.transform.Translate(direction * speed * Time.deltaTime, Space.World);
 
         // Check if character is moving 
         if(direction != Vector3.zero)
         {
-            // Rotate to face direction 
+            // Uf moving, rotate to face direction 
+            Xaria_Empty.transform.Translate(speed * Time.deltaTime * direction, Space.World);
             XariaRig.transform.forward = direction;
+
+           // XariaRig.transform.position = XariaRig.transform.position + Camera.main.transform.forward * speed * Time.deltaTime;
         }
+
     }
 }
