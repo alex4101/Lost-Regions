@@ -32,25 +32,31 @@ public class PlayerMovement : MonoBehaviour
 
         Xaria_Empty = GameObject.Find("Xaria");
         XariaRig = GameObject.Find("XariaRig");
-
     }
 
     // Update is called once per frame
     void Update()
     {
         // Move player
-        var direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        float move_Horizontal = Input.GetAxis("Horizontal"); // returns float value between -1 and 1.  
+        float move_Vertical = Input.GetAxis("Vertical");
+        Vector3 direction = new Vector3(move_Horizontal, 0.0f, move_Vertical);
         direction.Normalize(); // makes sure we have a magnitude of 1
+        // movement = cam.transform.TransformDirection(movement);
+        Quaternion look_At_Camera = Quaternion.LookRotation(Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up), Vector3.up); ;
+
+        // Camera will rotate with camera
+        XariaRig.transform.rotation = look_At_Camera;
 
         // Check if character is moving 
-        if(direction != Vector3.zero)
-        {
-            // Uf moving, rotate to face direction 
-            Xaria_Empty.transform.Translate(speed * Time.deltaTime * direction, Space.World);
-            XariaRig.transform.forward = direction;
-
-           // XariaRig.transform.position = XariaRig.transform.position + Camera.main.transform.forward * speed * Time.deltaTime;
-        }
+         if (direction != Vector3.zero)
+         {
+             // If moving, rotate to face direction 
+             XariaRig.transform.forward = direction; // moves character in correct direction
+             Xaria_Empty.transform.Translate(speed * Time.deltaTime * direction, Space.World); // moves character
+         }
+        
+       
 
     }
 }
