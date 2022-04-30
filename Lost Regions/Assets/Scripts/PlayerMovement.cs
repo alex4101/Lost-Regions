@@ -42,21 +42,21 @@ public class PlayerMovement : MonoBehaviour
         float move_Vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(move_Horizontal, 0.0f, move_Vertical);
         direction.Normalize(); // makes sure we have a magnitude of 1
-        // movement = cam.transform.TransformDirection(movement);
-        Quaternion look_At_Camera = Quaternion.LookRotation(Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up), Vector3.up); ;
 
-        // Camera will rotate with camera
-        XariaRig.transform.rotation = look_At_Camera;
+       // Quaternion look_At_Camera = Quaternion.LookRotation(Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up), Vector3.up); // character rotates w/ camera
+      //  XariaRig.transform.rotation = look_At_Camera; // Player will rotate with camera
 
         // Check if character is moving 
-         if (direction != Vector3.zero)
+        if (direction != Vector3.zero)
          {
-             // If moving, rotate to face direction 
-             XariaRig.transform.forward = direction; // moves character in correct direction
+            // Player is moving! Move forward 
+              XariaRig.transform.forward = direction; // moves character in correct direction
+             Xaria_Empty.transform.Translate(speed * Time.deltaTime * XariaRig.transform.forward, Space.World); // moves character
              Xaria_Empty.transform.Translate(speed * Time.deltaTime * direction, Space.World); // moves character
-         }
-        
-       
+
+        }
+
+
 
     }
 }

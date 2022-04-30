@@ -7,27 +7,23 @@ public class AnimationManagement : MonoBehaviour
     // Variables
     public PlayerMovement movement_Script;
     public Animator animator;
-
-   // public Animation idleAnim;
-   // public Animation walkAnim;
-   // public Animation runAnim;
-   // public Animation sword_UnsheathAnim;
-   // public Animation sword_SwingAnim;
-   // public Animation sword_SheathAnim;
+    public GameObject sword;
 
     // Start is called before the first frame update
     void Start()
     {
         movement_Script = GameObject.Find("Xaria Model").GetComponent<PlayerMovement>();
         animator = GameObject.Find("XariaRig").GetComponent<Animator>();
+        sword = GameObject.Find("Sword");
+
+        sword.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
         // Walking state
-        if(Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d"))
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             // player is moving!
             animator.SetBool("isWalking", true);
@@ -40,8 +36,9 @@ public class AnimationManagement : MonoBehaviour
             movement_Script.speed = movement_Script.walk_Speed;
         }
 
+
         // Running state
-        if (Input.GetKey("left shift"))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("isRunning", true);
             movement_Script.speed = movement_Script.run_Speed;
@@ -52,14 +49,71 @@ public class AnimationManagement : MonoBehaviour
             movement_Script.speed = movement_Script.walk_Speed;
         }
 
-        if (movement_Script.player_Is_Moving == true)
+        
+        // Sword states
+        if(Input.GetKey(KeyCode.E))
         {
-            // player is currently moving. Play walk animation
+            // Take out sword
+            animator.SetBool("takeOutSword", true);
+            StartCoroutine(DelaySwordSpawn());
+        }
 
-        }
-        else
+
+        if(sword.activeInHierarchy == true)
         {
-            // player is currently idle. Play idle animation
+            // Sword is out! Player is currently holding sword
+
+            // Check if user wants to swing sword. User presses left mouse button to swing
+            if(Input.GetMouseButtonDown(0))
+            {
+               //Debug.Log("Player is swinging sword");
+                animator.SetBool("swordSlash", true);
+                Debug.Log("sword slash is run");
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                StartCoroutine(DelaySwordSwingVariable());
+            }
+
+
+            // Put sword away
+            if (Input.GetKey(KeyCode.R))
+            {
+                animator.SetBool("putAwaySword", true);
+                animator.SetBool("takeOutSword", false);
+
+                sword.SetActive(false);
+
+                StartCoroutine(DelaySwordSheathVariable());
+
+            }
         }
+    }
+
+    /// <summary>
+    /// Delays code by 1.3f seconds so that the sword spawns when the player is unsheathing the sword
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator DelaySwordSpawn()
+    {
+        yield return new WaitForSeconds(1.6f);
+        sword.SetActive(true);
+    }
+
+    /// <summary>
+    /// Delays the SwordSwing variable "swordSlash" set to false so animations runs correctly
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator DelaySwordSwingVariable()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("swordSlash", false);
+    }
+
+    IEnumerator DelaySwordSheathVariable()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("putAwaySword", false);
     }
 }

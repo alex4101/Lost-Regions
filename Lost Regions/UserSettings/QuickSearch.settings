@@ -16,7 +16,7 @@ filters = {
 	settings = true
 }
 scopes = {
-	"last_search.AB59B443" = "package manager"
+	"last_search.AB59B443" = "lightmapper"
 }
 providers = {
 	asset = {

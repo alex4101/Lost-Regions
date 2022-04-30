@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 31ce74522fcad884c8a42a85e0b20eaf, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 77682bef7111a8b48a95b00decd0524b, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -594,7 +594,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 250, y: 0}
-  m_SizeDelta: {x: 250, y: 100}
+  m_SizeDelta: {x: 250, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1040541109
 MonoBehaviour:
@@ -630,7 +630,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "                  Controls:\n\nMove: WASD \nRun: Hold shift\nRotate camera:
-    mouse or trackpad"
+    mouse or trackpad\nTake out sword: E\nPut away sword: R\nSwing sword: click mouse"
 --- !u!222 &1040541110
 CanvasRenderer:
   m_ObjectHideFlags: 0
